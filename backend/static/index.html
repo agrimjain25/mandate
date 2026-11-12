@@ -1,0 +1,137 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mandate: the trust layer for agentic commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-grid.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-theme-quartz.css">
+<style>
+:root{--bg:#070d22;--line:#ffffff1f;--ink:#eaf0ff;--mut:#97a3c9;--vio:#7c5cff;--vio2:#b18cff;--mint:#2de2b0;--red:#ff5d6c;--amb:#ffb84d}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font:14.5px/1.55 Inter,system-ui,sans-serif;
+background:radial-gradient(1100px 560px at 12% -8%,#4a33c066,transparent),radial-gradient(900px 480px at 96% 4%,#12b88633,transparent),var(--bg)}
+.nav{position:sticky;top:0;z-index:5;background:#070d22d9;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:12px max(24px,calc((100vw - 1240px)/2 + 20px));flex-wrap:wrap}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--vio),var(--mint));display:grid;place-items:center;font-weight:800;box-shadow:0 0 24px #7c5cff80}
+.nav h1{font-size:17px;margin:0;font-weight:700}.nav h1 small{display:block;font-size:11.5px;font-weight:400;color:var(--mut)}.sp{flex:1}
+.pill{font-size:12px;padding:4px 11px;border-radius:99px;background:#ffffff14;color:#dfe6ff;text-decoration:none;white-space:nowrap;border:1px solid var(--line)}.pill.warn{background:#ffb84d22;color:#ffd08a}.pill.ok{background:#2de2b022;color:#7af0cf}
+.wrap{max-width:1240px;margin:auto}.hero{padding:54px 20px 30px}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:#7af0cf;border:1px solid #2de2b044;background:#2de2b014;padding:4px 12px;border-radius:99px}
+.hero h2{font-size:clamp(30px,5vw,52px);line-height:1.08;margin:16px 0 12px;font-weight:800;letter-spacing:-1.2px;max-width:820px}
+.hero h2 em{font-style:normal;background:linear-gradient(90deg,#b18cff,#2de2b0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:0;color:#b8c3e8;max-width:700px;font-size:16px}
+.chain{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.chain div{position:relative;background:#ffffff0d;border:1px solid var(--line);border-radius:14px;padding:11px 16px;font-size:13px;backdrop-filter:blur(10px)}
+.chain div:not(:last-child):after{content:"\2192";position:absolute;right:-17px;top:50%;transform:translateY(-50%);color:#7c5cff}.chain b{color:#7af0cf;display:block;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase}
+main{max-width:1240px;margin:0 auto 48px;padding:0 20px;display:grid;gap:20px}
+.card{background:#ffffff0b;border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(16px);box-shadow:0 18px 50px #0007}
+.card h3{margin:0 0 4px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px}.num{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--vio),var(--vio2));font-size:12.5px;display:grid;place-items:center;box-shadow:0 0 16px #7c5cff70}
+.sub{color:var(--mut);margin:0 0 14px;font-size:13px}.two{display:grid;grid-template-columns:1.15fr 1fr;gap:20px}
+textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;font:inherit;resize:vertical;background:#050a1c;color:var(--ink)}textarea:focus{outline:2px solid var(--vio);border-color:transparent}
+#goal{min-height:84px}#pol{font:12px ui-monospace,Menlo,monospace;min-height:150px;margin-top:10px;color:#9fb0ff}
+button{border:0;border-radius:12px;padding:10px 18px;font:600 13.5px Inter,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--vio),#9a6bff);color:#fff;transition:.18s;box-shadow:0 6px 20px #7c5cff40}
+button:hover{transform:translateY(-1px);box-shadow:0 10px 26px #7c5cff66}button:disabled{opacity:.55;cursor:wait;transform:none}
+button.alt{background:#ffffff0f;color:#d7defa;border:1px solid var(--line);box-shadow:none}button.red{background:linear-gradient(135deg,#ff5d6c,#ff8a4c);box-shadow:0 6px 20px #ff5d6c44}button.mint{background:linear-gradient(135deg,#12b886,#2de2b0);color:#04261c;box-shadow:0 6px 20px #2de2b044}
+button.mini{padding:5px 11px;font-size:12px;margin-right:5px;border-radius:9px}.row{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;align-items:center}.muted{color:var(--mut);font-size:12.5px}
+.assume{background:#ffb84d17;border:1px solid #ffb84d44;color:#ffd08a;border-radius:12px;padding:9px 12px;font-size:12.5px;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#ffffff0a;border:1px solid var(--line);border-radius:16px;padding:13px 15px}.stat b{display:block;font-size:24px;letter-spacing:-.6px}.stat span{font-size:12px;color:var(--mut)}
+.stat.bad b{color:var(--red)}.stat.good b{color:var(--mint)}.bar{height:9px;border-radius:9px;background:#ffffff14;margin-top:14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--vio),var(--mint));width:0;transition:.6s;box-shadow:0 0 14px #2de2b080}
+.steps{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}.st{font-size:12px;padding:4px 11px;border-radius:99px;background:#ffffff0f;color:var(--mut);border:1px solid var(--line)}.st.done{background:#2de2b01f;color:#7af0cf;border-color:#2de2b055}
+.b{display:inline-flex;align-items:center;gap:6px;padding:2px 11px;border-radius:99px;font-size:12px;font-weight:600}.b:before{content:"";width:6px;height:6px;border-radius:9px;background:currentColor;box-shadow:0 0 8px currentColor}
+.b.allow{background:#2de2b01f;color:#34f0b8}.b.block{background:#ff5d6c24;color:#ff8591}.b.escalate{background:#ffb84d24;color:#ffc978}.b.s{background:#ffffff14;color:#c6d0f2}.b.paid{background:#7c5cff33;color:#c8b8ff}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.legend div{background:#ffffff08;border:1px solid var(--line);border-radius:14px;padding:12px}.legend p{margin:8px 0 0;color:var(--mut);font-size:13px}
+.chips{display:flex;gap:7px;margin:6px 0 14px;flex-wrap:wrap}.chip{padding:5px 14px;border-radius:99px;border:1px solid var(--line);background:#ffffff0a;color:#cfd8f7;font-size:12.5px;cursor:pointer;font-weight:600}.chip.on{background:linear-gradient(135deg,var(--vio),#9a6bff);color:#fff;border-color:transparent}
+.grid{height:360px;--ag-font-family:Inter,system-ui,sans-serif;--ag-background-color:#0a1230;--ag-foreground-color:#e3e9ff;--ag-header-background-color:#141f4a;--ag-header-foreground-color:#a9b6e6;--ag-odd-row-background-color:#0c1535;--ag-border-color:#24336b;--ag-row-hover-color:#1a2a63;--ag-wrapper-border-radius:14px;--ag-input-border-color:#24336b}
+.arenaGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:14px}
+.plan{border:1px solid var(--line);border-radius:18px;padding:16px;position:relative;background:#ffffff09}.plan.best{border:1.5px solid var(--mint);background:#2de2b010;box-shadow:0 0 30px #2de2b025}.plan.rej{opacity:.7}
+.plan .ribbon{position:absolute;top:-11px;right:14px;background:var(--mint);color:#04261c;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px}.plan big{display:block;font-size:26px;font-weight:800;margin:8px 0 2px;letter-spacing:-.6px}
+.orig{background:#ff5d6c14;border:1px solid #ff5d6c55;border-radius:16px;padding:13px 16px}.orig.ok{background:#2de2b012;border-color:#2de2b055}
+.empty{text-align:center;color:var(--mut);padding:40px 10px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#141f4a;border:1px solid #3a4b9a;color:#fff;padding:13px 22px;border-radius:14px;display:none;max-width:84%;box-shadow:0 14px 40px #000a;z-index:9}#toast.show{display:block}#toast.bad{background:#5a1420;border-color:#ff5d6c}
+a.lnk{color:#b18cff;font-size:13px;font-weight:600;text-decoration:none;margin-left:auto}
+@media(max-width:860px){.two{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.chain div:after{display:none}}
+</style></head><body>
+<div class="nav"><div class="logo">M</div><h1>Mandate<small>The trust layer for agentic commerce</small></h1><span class="sp"></span>
+<span class="pill" id="p1"></span><span class="pill" id="p2"></span><span class="pill ok">PayPal sandbox</span>
+<a class="pill" href="/studio" target="_blank">AG Studio analytics</a>
+<button class="alt mini" id="reset">Reset demo</button><button class="red mini" id="kill">Kill switch</button><button class="alt mini" id="resume">Resume</button></div>
+<div class="hero"><div class="wrap"><span class="eyebrow">PayPal AI Hackathon &middot; Agentic commerce</span>
+<h2>Give AI agents a budget, <em>not your wallet.</em></h2>
+<p>Mandate turns a plain-English goal into a policy you confirm. An AI agent shops inside it, plain code checks every purchase, you approve, PayPal pays, and every step is logged.</p>
+<div class="chain"><div><b>1 &middot; AI</b>proposes</div><div><b>2 &middot; Policy</b>disposes</div><div><b>3 &middot; You</b>authorize</div><div><b>4 &middot; PayPal</b>settles</div><div><b>5 &middot; Audit</b>proves it</div></div></div></div>
+<main>
+<section class="card"><h3>How to read this page</h3><div class="legend"><div><span class="b allow">allowed</span><p>Within every rule. Press Pay.</p></div><div><span class="b escalate">needs approval</span><p>Legal, but above your approval limit. Approve, then Pay.</p></div><div><span class="b block">blocked</span><p>Breaks a rule. Approve will not help and Pay is refused. Use Arena for alternatives.</p></div><div><span class="b paid">paid and verified</span><p>PayPal confirmed the exact amount.</p></div></div></section>
+<section class="two">
+ <div class="card"><h3><span class="num">1</span>Mandate Studio</h3><p class="sub">Describe what to buy and your limits. Nothing runs until you confirm the policy.</p>
+  <textarea id="goal">Prepare a 30-person community hackathon venue kit by 30 Nov 2026. Max $1,500, no item over $200, merchants must deliver within 5 days, ask me before anything over $100.</textarea>
+  <div class="row"><button id="draft">Draft policy with AI</button><span class="muted" id="src"></span></div>
+  <div class="assume" id="assumed">The AI drafts the rules. You review and confirm them.</div>
+  <textarea id="pol" placeholder="Drafted policy appears here. You can edit it."></textarea>
+  <div class="row"><button class="mint" id="confirm">Confirm mandate</button></div></div>
+ <div class="card"><h3><span class="num">2</span>Impact</h3><p class="sub">Live numbers from the policy gate.</p><div class="stats" id="stats"></div>
+  <div class="bar"><i id="bar"></i></div><div class="muted" id="barTxt" style="margin-top:6px"></div><div class="steps" id="steps"></div>
+  <h3 style="margin-top:18px"><span class="num">3</span>Agent</h3><p class="sub">The AI plans and sources items. Every proposal still passes the policy gate.</p>
+  <div class="row"><button id="run">Run agent</button><button class="alt" id="attack">Adversarial purchase test</button></div></div>
+</section>
+<section class="card"><h3><span class="num">4</span>Live Policy Ledger</h3><p class="sub">Each row is a proposed purchase with the gate's verdict and reasons. Approval cannot override a block.</p>
+ <div class="chips" id="chips"><span class="chip on" data-f="">All</span><span class="chip" data-f="allow">Allowed</span><span class="chip" data-f="escalate">Needs approval</span><span class="chip" data-f="block">Blocked</span></div>
+ <div id="ledger" class="ag-theme-quartz grid"></div></section>
+<section class="card" id="arenaBox" style="display:none"><h3><span class="num">5</span>Decision Arena</h3><p class="sub">Competing plans compared, with why each was kept or rejected and the budget impact.</p><div id="arena"></div></section>
+<section class="card"><h3><span class="num">6</span>Audit trail<a class="lnk" href="/audit.csv">Export CSV</a></h3><p class="sub">Every decision and payment event, newest first.</p><div id="audit" class="ag-theme-quartz grid" style="height:300px"></div></section>
+</main><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);let plans=[];
+function toast(t,bad){const e=$('#toast');e.textContent=t;e.className='show'+(bad?' bad':'');clearTimeout(window._t);window._t=setTimeout(()=>e.className='',6500)}
+async function api(p,m='GET',b){const r=await fetch(p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});let j={};try{j=await r.json()}catch{}
+ if(!r.ok){toast(j.detail||r.statusText,true);throw j}return j}
+async function busy(btn,fn){const t=btn.textContent;btn.disabled=true;btn.textContent='Working...';try{await fn()}catch(e){}finally{btn.disabled=false;btn.textContent=t}}
+const badge=p=>`<span class="b ${p.value}">${p.value==='escalate'?'needs approval':p.value}</span>`;
+const stat=p=>({paid:'<span class="b paid">paid and verified</span>',order_created:'<span class="b s">awaiting buyer</span>'}[p.value]||`<span class="b s">${p.value}</span>`);
+const btn=(a,i,t,c='')=>`<button class="mini ${c}" data-a="${a}" data-i="${i}">${t}</button>`;
+const fmt=n=>'$'+Number(n).toLocaleString(undefined,{maximumFractionDigits:2});
+const ledger=agGrid.createGrid($('#ledger'),{getRowId:p=>p.data.id,animateRows:true,rowHeight:52,headerHeight:42,defaultColDef:{sortable:true,filter:true,resizable:true},
+ overlayNoRowsTemplate:'<div class="empty"><b>No proposals yet</b><br>Confirm a mandate, then press Run agent.</div>',
+ columnDefs:[{headerName:'Item',valueGetter:p=>p.data.proposal.item,width:150},{headerName:'Merchant',valueGetter:p=>p.data.proposal.merchant,width:115},
+ {headerName:'Qty',valueGetter:p=>p.data.proposal.qty,width:75},{headerName:'Total',field:'total',width:105,valueFormatter:p=>fmt(p.value)},
+ {headerName:'Verdict',field:'verdict',cellRenderer:badge,width:140},{headerName:'Status',field:'status',cellRenderer:stat,width:160},
+ {headerName:'Why',valueGetter:p=>p.data.reasons.join('; ')+(p.data.note?' | '+p.data.note:''),flex:1,minWidth:240,tooltipValueGetter:p=>p.value},
+ {headerName:'Actions',width:300,sortable:false,filter:false,cellRenderer:p=>{const e=p.data,i=e.id;if(['paid','rejected','voided'].includes(e.status))return '';
+  return btn('approve',i,'Approve','alt')+btn('pay',i,'Pay')+btn('reject',i,'Reject','alt')+(e.verdict!=='allow'?btn('arena',i,'Arena','alt'):'')}}]});
+const audit=agGrid.createGrid($('#audit'),{defaultColDef:{sortable:true,filter:true,resizable:true},rowHeight:42,
+ columnDefs:[{field:'ts',headerName:'Time (UTC)',width:210},{field:'event',width:180,cellRenderer:p=>`<span class="b s">${p.value}</span>`},{field:'pid',headerName:'Proposal',width:120,valueFormatter:p=>(p.value||'').slice(0,8)},{field:'detail',flex:1}]});
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+ ledger.setFilterModel(c.dataset.f?{verdict:{filterType:'text',type:'equals',filter:c.dataset.f}}:null)});
+async function refresh(){
+ const [L,A,S,C]=await Promise.all([api('/ledger'),api('/audit'),api('/stats'),api('/config')]);
+ ledger.setGridOption('rowData',L);audit.setGridOption('rowData',A.slice().reverse());
+ const used=S.reserved||0,pct=S.budget?Math.min(100,used/S.budget*100):0;
+ $('#stats').innerHTML=[['Budget',fmt(S.budget),''],['Paid (verified)',fmt(S.paid),'good'],['Remaining',fmt(S.remaining),''],['Violations blocked',S.violations_prevented,'bad'],['Value blocked',fmt(S.blocked_value),'bad'],['Proposals',S.proposals,'']]
+  .map(x=>`<div class="stat ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('');
+ $('#bar').style.width=pct+'%';$('#barTxt').textContent=S.budget?`${pct.toFixed(0)}% of budget committed`:'No mandate confirmed yet';
+ const steps=[['Mandate confirmed',!!C.mandate],['Agent proposed',L.length>0],['Gate blocked a violation',S.violations_prevented>0],['Payment verified',S.paid_count>0]];
+ $('#steps').innerHTML=steps.map(s=>`<span class="st ${s[1]?'done':''}">${s[1]?'✓ ':''}${s[0]}</span>`).join('');
+ $('#p1').textContent=C.seeded?'Seeded product data':'Channel3 live data';$('#p1').className='pill '+(C.seeded?'warn':'ok');
+ $('#p2').textContent=C.llm?'LLM on':'LLM off (demo mode)';$('#p2').className='pill '+(C.llm?'ok':'warn');
+ if(C.mandate&&!$('#pol').value)$('#pol').value=JSON.stringify(C.mandate,null,2);
+ if(C.frozen)toast('Agent is frozen by the kill switch',true)}
+async function showArena(id){const r=await api('/arena/'+id);plans=r.plans;const o=r.original,p=o.proposal;
+ $('#arenaBox').style.display='block';let first=true;
+ $('#arena').innerHTML=`<div class="orig ${o.verdict==='block'?'':'ok'}"><b>Original proposal:</b> ${p.item} x${p.qty} from ${p.merchant} (${fmt(o.total)}) <span class="b ${o.verdict}">${o.verdict==='escalate'?'needs approval':o.verdict}</span><div class="muted">${o.reasons.join('; ')}</div></div>
+ <div class="arenaGrid">`+plans.slice(0,6).map((x,i)=>{const best=x.verdict!=='block'&&first;if(best)first=false;
+ return `<div class="plan ${best?'best':''} ${x.verdict==='block'?'rej':''}">${best?'<span class="ribbon">Best plan</span>':''}<b>${x.label}</b> <span class="b ${x.verdict}">${x.verdict==='escalate'?'needs approval':x.verdict}</span>
+ <big>${fmt(x.total)}</big><div class="muted">Budget left ${fmt(x.budget_after)}</div><div class="muted" style="margin:6px 0 8px">${x.why}</div>${x.verdict!=='block'?btn('use',i,'Use this plan'):''}</div>`}).join('')+`</div>`;
+ $('#arenaBox').scrollIntoView({behavior:'smooth'})}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i;
+ try{if(a==='pay'){const r=await api('/pay/'+i,'POST');if(r.approve_url)location.href=r.approve_url;else toast('No approval link returned',true)}
+ else if(a==='arena')await showArena(i);
+ else if(a==='use'){const p=plans[i];await api('/propose','POST',{...p.proposal,note:'Chosen in Decision Arena: '+p.why});toast('New proposal added. Approve it to continue.');await refresh()}
+ else{await api('/'+a+'/'+i,'POST');toast(a==='approve'?'Approval recorded (a block still cannot be paid)':'Rejected');await refresh()}}catch(x){await refresh()}});
+$('#draft').onclick=e=>busy(e.target,async()=>{const r=await api('/mandate/draft','POST',{text:$('#goal').value});$('#pol').value=JSON.stringify(r.policy,null,2);
+ $('#assumed').textContent=r.assumed_defaults.length?'Assumed by the system, please review: '+r.assumed_defaults.join(', '):'All values came from your text.';
+ $('#src').textContent=r.source==='llm'?'Drafted by the LLM':'Demo mode: no LLM key'});
+$('#confirm').onclick=e=>busy(e.target,async()=>{try{await api('/mandate/confirm','POST',JSON.parse($('#pol').value))}catch(x){if(x instanceof SyntaxError)toast('Policy is not valid JSON',true);throw x}toast('Mandate confirmed. The agent can now act inside it.');await refresh()});
+$('#run').onclick=e=>busy(e.target,async()=>{const r=await api('/agent/run','POST',{text:$('#goal').value});toast('Agent created '+r.length+' proposals');await refresh()});
+$('#attack').onclick=e=>busy(e.target,async()=>{const r=await api('/demo/attack','POST');toast((r.verdict==='block'?'Blocked: ':'Result: ')+r.reasons.join('; '),r.verdict!=='block');await refresh();await showArena(r.id)});
+$('#reset').onclick=async()=>{if(!confirm('Clear the mandate, ledger and audit log?'))return;await api('/demo/reset','POST');$('#pol').value='';$('#arenaBox').style.display='none';toast('Demo reset. Draft and confirm a new mandate.');refresh()};
+$('#kill').onclick=async()=>{const r=await api('/kill','POST');toast('Agent frozen, '+r.voided+' pending voided',true);refresh()};
+$('#resume').onclick=async()=>{await api('/resume','POST');toast('Agent resumed');refresh()};
+(async()=>{const q=new URLSearchParams(location.search);history.replaceState({},'','/');
+ if(q.get('paid')){try{const r=await api('/capture/'+q.get('paid'),'POST');toast('Payment verified with PayPal: '+fmt(r.amount))}catch(x){}}
+ if(q.get('cancelled'))toast('Payment cancelled by buyer',true);refresh()})();
+</script></body></html>

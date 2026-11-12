@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Mandate: AG Studio analytics</title>
+<style>body{margin:0;font:15px system-ui,sans-serif}header{background:#0b1b3a;color:#fff;padding:14px 24px;height:56px;box-sizing:border-box}
+header a{color:#fff;margin-left:16px}#err{color:#e5484d;padding:12px;white-space:pre-wrap}</style></head><body>
+<header>Mandate analytics, built with AG Studio <a href="/">Back to app</a></header><div id="err"></div>
+<div id="myStudio" style="height:calc(100vh - 56px)"></div>
+<script>
+const V="https://cdn.jsdelivr.net/npm/ag-studio@3.0.0",err=document.getElementById('err'),log=[];
+const lib=()=>window.agStudio||window.AgStudio||window._studioMod;
+const score=n=>(/umd|iife|global/i.test(n)?4:0)+(/min/i.test(n)?2:0)+(/esm|module|cjs/i.test(n)?-5:0);
+const load=u=>new Promise(res=>{const s=document.createElement('script');s.src=u;s.onload=()=>res(!!lib());s.onerror=()=>res(false);document.head.appendChild(s)});
+async function discover(){
+ try{const j=await (await fetch('https://data.jsdelivr.com/v1/packages/npm/ag-studio@3.0.0?structure=flat')).json();
+  const f=(j.files||[]).map(x=>x.name).filter(n=>/\.js$/.test(n)).sort((a,b)=>score(b)-score(a));log.push('files found: '+f.slice(0,8).join(', '));
+  return f.slice(0,4).map(n=>V+n)}catch(e){log.push('could not list package files');return[]}}
+(async()=>{
+ const urls=[V+"/dist/ag-studio.min.js",...await discover()];
+ for(const u of [...new Set(urls)]){const ok=await load(u);log.push((ok?'OK      ':'no global ')+u);if(ok)break}
+ if(!lib()){try{window._studioMod=await import(V+"/+esm");log.push('OK      ESM bundle '+V+'/+esm')}catch(e){log.push('FAILED  ESM bundle: '+e.message)}}
+ if(!lib()||!lib().createStudio){err.textContent='AG Studio could not be loaded.\n'+log.join('\n');return}
+ try{
+  const [L,A]=await Promise.all([fetch('/ledger').then(r=>r.json()),fetch('/audit').then(r=>r.json())]);
+  if(!L.length){err.textContent='Ledger is empty. Run the agent in the main app first, then reload.';return}
+  const rows=L.map(e=>({item:e.proposal.item,merchant:e.proposal.merchant,qty:e.proposal.qty,unitPrice:e.proposal.unit_price,
+   total:e.total,verdict:e.verdict,status:e.status,source:e.source,reasons:e.reasons.join('; ')}));
+  let saved=null;try{saved=JSON.parse(localStorage.getItem('studioState')||'null')}catch(e){}
+  const props={mode:'edit',data:{sources:[{id:'ledger',name:'Policy ledger',data:rows},{id:'audit',name:'Audit log',data:A}]},
+   onStateUpdated:ev=>{try{localStorage.setItem('studioState',JSON.stringify(ev.state))}catch(e){}}};
+  if(saved)props.initialState=saved;
+  const el=document.getElementById('myStudio');
+  try{lib().createStudio(el,props)}catch(e){delete props.initialState;localStorage.removeItem('studioState');lib().createStudio(el,props)}
+ }catch(e){err.textContent='AG Studio loaded but failed to start: '+e.message+'\n'+log.join('\n')}
+})();
+</script></body></html>
